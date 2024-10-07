@@ -1,9 +1,18 @@
+import mongoose from 'mongoose';
 import http from 'http';
-import { Server } from 'socket.io';
 import app from './app';
 import { chatController } from './controllers/chatController';
+import { Server } from 'socket.io';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const port = process.env.PORT || 3000;
+const mongoUri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/streamAssistantMedia'
+
+mongoose.connect(mongoUri)
+    .then(() => console.log('MongoDB connected'))
+    .catch(err => console.error('MongoDB connection error:', err));
 
 // Create HTTP server
 const server = http.createServer(app);
